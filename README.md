@@ -1,4 +1,4 @@
-# programmation_web_projet_S4
+# programmation_web_projet_s4
 
 This template should help get you started developing with Vue 3 in Vite.
 
