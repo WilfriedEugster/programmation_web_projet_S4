@@ -1,9 +1,18 @@
 <template>
   <div>
     <h1>Poems</h1>
+    <div id="gallery-options">
+      <input type="text" v-model="search" placeholder="Search poem" />
+      <label for="poem-sort">Sort by : </label>
+      <select v-model="poemsSortBy" id="poem-sort">
+        <option value="linecount">Linecount</option>
+        <option value="author">Author</option>
+        <option value="title">Title</option>
+      </select>
+    </div>
     <div id="poem-gallery">
       <PoemCard
-        v-for="poem in poemData"
+        v-for="poem in filteredPoemsData"
         :key="poem.id"
         :title="poem.title"
         :author="poem.author"
@@ -14,8 +23,31 @@
 </template>
 
 <script setup>
-import poemData from './William Shakespeare.json'
+import { ref, computed } from 'vue'
+import poemsData from './William Shakespeare.json'
 import PoemCard from './components/PoemCard.vue'
+
+const search = ref('')
+const poemsSortBy = ref('linecount')
+
+const filteredPoemsData = computed(() => {
+  let result = poemsData.filter(
+    (poem) => poem.title.toLowerCase().includes(search.value.toLowerCase())
+  )
+  result = result.toSorted((a, b) => {
+    if (poemsSortBy.value === 'linecount') {
+      // linecount can be null
+      return (a.linecount || 0) - (b.linecount || 0)
+    } else if (poemsSortBy.value === 'author') {
+      // sort in alphabetical order
+      return a.author.localeCompare(b.author)
+    } else if (poemsSortBy.value === 'title') {
+      // sort in alphabetical order
+      return a.title.localeCompare(b.title)
+    }
+  })
+  return result
+})
 </script>
 
 <style scoped>
