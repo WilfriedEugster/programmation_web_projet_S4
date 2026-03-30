@@ -1,26 +1,25 @@
+<script setup lang="ts">
+import { RouterLink } from 'vue-router';
+
+</script>
+
 <template>
 <header>
     <h1>Poems</h1>
     <nav>
         <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/search">Search</a></li>
+            <li><RouterLink to="/">Home</RouterLink></li>
+            <li><RouterLink to="/search">Search</RouterLink></li>
         </ul>
     </nav>
 </header>
 </template>
 
 <style scoped>
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  background-color: #f5f5f5;
-}
+
 nav ul {
-  display: flex;
-  flex-wrap: wrap;
+    display: flex;
+    flex-wrap: wrap;
     list-style: none;
     padding: 0;
 

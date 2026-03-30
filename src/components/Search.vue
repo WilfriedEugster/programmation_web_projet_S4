@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Poems</h1>
+    <h2>Search</h2>
     <div id="gallery-options">
       <input type="text" v-model="search" placeholder="Search poem" />
       <label for="poem-sort">Sort by : </label>
@@ -13,7 +13,7 @@
     <div id="poem-gallery">
       <PoemCard
         v-for="poem in filteredPoemsData"
-        :key="poem.id"
+        :key="poem.title"
         :title="poem.title"
         :author="poem.author"
         :linecount="poem.linecount"

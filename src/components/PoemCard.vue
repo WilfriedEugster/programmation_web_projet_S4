@@ -1,7 +1,9 @@
 <template>
   <div id="poem-card">
     <div id="poem-description">
-      <h3>{{ props.title }}</h3>
+      <RouterLink :to="'/poems/' + props.title">
+        <h3>{{ props.title }}</h3>
+      </RouterLink>
       <p class="poem-description-line">{{ props.author }}</p>
       <p class="poem-description-line">{{ props.linecount }} lines</p>
     </div>
@@ -12,7 +14,7 @@
 const props = defineProps({
   title: String,
   author: String,
-  linecount: Number,
+  linecount: String,
 })
 </script>
 
