@@ -50,6 +50,8 @@ const stateClass = computed(() => {
 	padding: 10px 12px;
 	background: white;
 	cursor: pointer;
+	width: 100%;
+	box-sizing: border-box;
 }
 
 .quiz-poem-card:disabled {

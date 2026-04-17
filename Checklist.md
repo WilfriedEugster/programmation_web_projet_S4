@@ -9,5 +9,5 @@
 - [x] Permettre à l’utilisateur d’interagir avec l’application pour modifier l’affichage des données : permettre à l’utilisateur d’**ordonner** ou **filtrer** les données présentées ou utilisées, par exemple.
 - [ ] **Animer** des éléments visuels de votre site dans le temps, ou lors d’un évènement.
 - [ ] Avoir un site [responsive](https://fr.wikipedia.org/wiki/Site_web_r%C3%A9actif).
-- [ ] Stocker des données de façon **persistante** sur le navigateur de l’utilisateur.
+- [x] Stocker des données de façon **persistante** sur le navigateur de l’utilisateur.
 - [x] Avoir un site **multi-pages**.

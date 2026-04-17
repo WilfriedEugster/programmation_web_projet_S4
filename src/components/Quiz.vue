@@ -3,12 +3,12 @@
 		<h2>Quiz</h2>
 
 		<div class="quiz-scoreboard">
-			<p class="score good">Bonnes reponses : {{ correctAnswers }}</p>
-			<p class="score bad">Mauvaises reponses : {{ wrongAnswers }}</p>
+			<p class="score good">Correct answers: {{ correctAnswers }}</p>
+			<p class="score bad">Wrong answers: {{ wrongAnswers }}</p>
 		</div>
 
 		<p class="quiz-instruction">
-			Quelle oeuvre contient cette ligne ?
+			Which poem is this line from?
 		</p>
 
 		<blockquote v-if="question" class="quiz-line">
@@ -30,13 +30,13 @@
 		<p v-if="hasAnswered" class="quiz-feedback" :class="isGoodAnswer ? 'good' : 'bad'">
 			{{
 				isGoodAnswer
-					? 'Bonne reponse !'
-					: 'Mauvaise reponse. La bonne est affichée en vert.'
+					? 'Correct answer!'
+					: 'Wrong answer. The correct one is highlighted in green.'
 			}}
 		</p>
 
 		<button class="next-question" @click="buildQuestion">
-			Nouvelle question
+			New question
 		</button>
 	</section>
 </template>
@@ -151,11 +151,6 @@ buildQuestion();
 </script>
 
 <style scoped>
-.quiz {
-	max-width: 800px;
-	margin: 0 auto;
-	padding: 16px;
-}
 
 .quiz-scoreboard {
 	display: flex;
@@ -190,6 +185,7 @@ buildQuestion();
 
 .quiz-choices {
 	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
 	gap: 10px;
 }
 
