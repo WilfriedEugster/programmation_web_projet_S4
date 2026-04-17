@@ -1,13 +1,11 @@
 <template>
-  <div id="poem-card">
-    <div id="poem-description">
-      <RouterLink :to="'/poems/' + props.title">
-        <h3>{{ props.title }}</h3>
-      </RouterLink>
-      <p class="poem-description-line">{{ props.author }}</p>
-      <p class="poem-description-line">{{ props.linecount }} lines</p>
-    </div>
-  </div>
+  <article class="poem-card">
+    <RouterLink class="poem-link" :to="'/poems/' + props.title">
+      <strong class="poem-title">{{ props.title }}</strong>
+      <span class="poem-meta">{{ props.author }}</span>
+      <span class="poem-meta">{{ props.linecount }} lines</span>
+    </RouterLink>
+  </article>
 </template>
 
 <script setup>
@@ -19,30 +17,30 @@ const props = defineProps({
 </script>
 
 <style scoped>
-#poem-card {
-  width: 200px;
-  height: 200px;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  overflow: hidden;
-  margin: 10px;
+.poem-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: white;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-#poem-description {
-  padding: 10px;
-  color: #000000;
+.poem-link {
+  display: block;
+  text-align: left;
+  padding: 10px 12px;
+  color: inherit;
+  text-decoration: none;
 }
 
-#poem-description h3 {
-  font-size: 18px;
-  margin: 0;
+.poem-title {
+  display: block;
 }
 
-.poem-description-line {
-  color: #353535;
-  font-size: 12px;
-  margin: 5px 0;
+.poem-meta {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.95rem;
+  color: #555;
 }
 </style>

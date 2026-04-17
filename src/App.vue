@@ -11,6 +11,15 @@ import Header from "./components/Header.vue";
 
 </script>
 
-<style scoped>
+<style>
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
 
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
 </style>

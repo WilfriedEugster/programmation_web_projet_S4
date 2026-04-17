@@ -21,6 +21,7 @@ import { RouterLink } from 'vue-router';
 nav ul {
     display: flex;
     flex-wrap: wrap;
+    gap: 16px;
     list-style: none;
     padding: 0;
 

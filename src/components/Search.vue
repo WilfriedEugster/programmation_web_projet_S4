@@ -68,7 +68,8 @@ const filteredPoemsData = computed(() => {
   margin-bottom: 20px;
 }
 #poem-gallery {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
 }
 </style>

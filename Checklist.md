@@ -1,0 +1,13 @@
+
+- [x] Découper l’interface de l’application en single file components intelligemment.
+- [x] Exploiter différentes données, provenant de préférence d’une API.
+- [x] Utiliser des directives **conditionnelles**, et **itératives** dans l’application.
+- [x] Effectuer des opérations de tri sur un tableau de données provenant d’une API.
+- [ ] Avoir une **structure** dans la page principale de l’application présentant au moins un header (ou une barre latérale) et un **footer**.
+- [x] Avoir une architecture de projet **propre**.
+- [x] Soigner le **nommage** des éléments de code, en **anglais** (composants, méthodes, etc.).
+- [x] Permettre à l’utilisateur d’interagir avec l’application pour modifier l’affichage des données : permettre à l’utilisateur d’**ordonner** ou **filtrer** les données présentées ou utilisées, par exemple.
+- [ ] **Animer** des éléments visuels de votre site dans le temps, ou lors d’un évènement.
+- [ ] Avoir un site [responsive](https://fr.wikipedia.org/wiki/Site_web_r%C3%A9actif).
+- [ ] Stocker des données de façon **persistante** sur le navigateur de l’utilisateur.
+- [x] Avoir un site **multi-pages**.

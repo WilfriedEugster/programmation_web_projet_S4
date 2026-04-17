@@ -2,6 +2,11 @@
 	<section class="quiz">
 		<h2>Quiz</h2>
 
+		<div class="quiz-scoreboard">
+			<p class="score good">Bonnes reponses : {{ correctAnswers }}</p>
+			<p class="score bad">Mauvaises reponses : {{ wrongAnswers }}</p>
+		</div>
+
 		<p class="quiz-instruction">
 			Quelle oeuvre contient cette ligne ?
 		</p>
@@ -11,24 +16,22 @@
 		</blockquote>
 
 		<div v-if="question" class="quiz-choices">
-			<button
+			<QuizPoemCard
 				v-for="choice in question.choices"
 				:key="choice.id"
-				class="quiz-choice"
-				:class="getChoiceClass(choice.id)"
+				:title="choice.title"
+				:author="choice.author"
+				:state="getChoiceState(choice.id)"
 				:disabled="hasAnswered"
-				@click="submitAnswer(choice.id)"
-			>
-				<strong>{{ choice.title }}</strong>
-				<span class="choice-author">{{ choice.author }}</span>
-			</button>
+				@select="submitAnswer(choice.id)"
+			/>
 		</div>
 
 		<p v-if="hasAnswered" class="quiz-feedback" :class="isGoodAnswer ? 'good' : 'bad'">
 			{{
 				isGoodAnswer
 					? 'Bonne reponse !'
-					: 'Mauvaise reponse. La bonne etait en vert.'
+					: 'Mauvaise reponse. La bonne est affichée en vert.'
 			}}
 		</p>
 
@@ -41,6 +44,21 @@
 <script setup>
 import { computed, ref } from "vue";
 import poemsData from "../William Shakespeare.json";
+import QuizPoemCard from "./QuizPoemCard.vue";
+
+const CORRECT_ANSWERS_KEY = "quiz-correct-answers";
+const WRONG_ANSWERS_KEY = "quiz-wrong-answers";
+
+const readStoredCount = (key) => {
+	const rawValue = localStorage.getItem(key);
+	const parsed = Number(rawValue);
+	if (!Number.isFinite(parsed) || parsed < 0) return 0;
+	return Math.floor(parsed);
+};
+
+const saveCount = (key, value) => {
+	localStorage.setItem(key, String(value));
+};
 
 const allPoems = poemsData.filter(
 	(poem) => Array.isArray(poem.lines) && poem.lines.some((line) => line.trim() !== "")
@@ -49,6 +67,8 @@ const allPoems = poemsData.filter(
 const question = ref(null);
 const selectedChoiceId = ref(null);
 const hasAnswered = ref(false);
+const correctAnswers = ref(readStoredCount(CORRECT_ANSWERS_KEY));
+const wrongAnswers = ref(readStoredCount(WRONG_ANSWERS_KEY));
 
 const isGoodAnswer = computed(() => {
 	if (!question.value || !hasAnswered.value) return false;
@@ -106,16 +126,25 @@ const buildQuestion = () => {
 };
 
 const submitAnswer = (choiceId) => {
-	if (hasAnswered.value) return;
+	if (hasAnswered.value || !question.value) return;
 	selectedChoiceId.value = choiceId;
 	hasAnswered.value = true;
+
+	if (choiceId === question.value.correctId) {
+		correctAnswers.value += 1;
+		saveCount(CORRECT_ANSWERS_KEY, correctAnswers.value);
+		return;
+	}
+
+	wrongAnswers.value += 1;
+	saveCount(WRONG_ANSWERS_KEY, wrongAnswers.value);
 };
 
-const getChoiceClass = (choiceId) => {
-	if (!hasAnswered.value || !question.value) return "";
-	if (choiceId === question.value.correctId) return "choice-correct";
-	if (choiceId === selectedChoiceId.value) return "choice-wrong";
-	return "";
+const getChoiceState = (choiceId) => {
+	if (!hasAnswered.value || !question.value) return "neutral";
+	if (choiceId === question.value.correctId) return "correct";
+	if (choiceId === selectedChoiceId.value) return "wrong";
+	return "neutral";
 };
 
 buildQuestion();
@@ -126,6 +155,26 @@ buildQuestion();
 	max-width: 800px;
 	margin: 0 auto;
 	padding: 16px;
+}
+
+.quiz-scoreboard {
+	display: flex;
+	gap: 14px;
+	margin-bottom: 12px;
+	flex-wrap: wrap;
+}
+
+.score {
+	margin: 0;
+	font-weight: 600;
+}
+
+.score.good {
+	color: #2f9e44;
+}
+
+.score.bad {
+	color: #d63333;
 }
 
 .quiz-instruction {
@@ -142,36 +191,6 @@ buildQuestion();
 .quiz-choices {
 	display: grid;
 	gap: 10px;
-}
-
-.quiz-choice {
-	text-align: left;
-	border: 1px solid #ccc;
-	border-radius: 8px;
-	padding: 10px 12px;
-	background: white;
-	cursor: pointer;
-}
-
-.quiz-choice:disabled {
-	cursor: default;
-}
-
-.choice-author {
-	display: block;
-	margin-top: 4px;
-	font-size: 0.95rem;
-	color: #555;
-}
-
-.choice-correct {
-	background: #e7f7e8;
-	border-color: #2f9e44;
-}
-
-.choice-wrong {
-	background: #fdeaea;
-	border-color: #d63333;
 }
 
 .quiz-feedback {
