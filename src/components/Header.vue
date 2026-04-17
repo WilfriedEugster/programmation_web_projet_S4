@@ -18,6 +18,10 @@ import { RouterLink } from 'vue-router';
 
 <style scoped>
 
+h1 {
+    text-transform: uppercase;
+}
+
 nav ul {
     display: flex;
     flex-wrap: wrap;
