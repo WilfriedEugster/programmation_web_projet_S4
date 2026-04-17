@@ -45,10 +45,10 @@ const stateClass = computed(() => {
 <style scoped>
 .quiz-poem-card {
 	text-align: left;
-	border: 1px solid #ccc;
-	border-radius: 8px;
-	padding: 10px 12px;
-	background: white;
+	border: 1px solid var(--ui-border-color);
+	border-radius: var(--ui-radius);
+	padding: var(--ui-padding-md);
+	background: var(--ui-bg);
 	cursor: pointer;
 	width: 100%;
 	box-sizing: border-box;
@@ -61,7 +61,7 @@ const stateClass = computed(() => {
 .choice-author {
 	display: block;
 	margin-top: 4px;
-	font-size: 0.95rem;
+	font-size: var(--font-size-sm);
 	color: #555;
 }
 

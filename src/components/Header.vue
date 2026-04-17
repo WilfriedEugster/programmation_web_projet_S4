@@ -8,9 +8,9 @@ import { RouterLink } from 'vue-router';
     <h1>Poems</h1>
     <nav>
         <ul>
-            <li><RouterLink to="/">Home</RouterLink></li>
-            <li><RouterLink to="/search">Search</RouterLink></li>
-            <li><RouterLink to="/quiz">Quiz</RouterLink></li>
+            <li><RouterLink class="nav-link" to="/">Home</RouterLink></li>
+            <li><RouterLink class="nav-link" to="/search">Search</RouterLink></li>
+            <li><RouterLink class="nav-link" to="/quiz">Quiz</RouterLink></li>
         </ul>
     </nav>
 </header>
@@ -25,5 +25,25 @@ nav ul {
     list-style: none;
     padding: 0;
 
+}
+
+.nav-link {
+    display: inline-block;
+    border: 1px solid var(--ui-border-color);
+    border-radius: var(--ui-radius);
+    padding: var(--ui-padding-sm);
+    background: var(--ui-bg);
+    color: inherit;
+    text-decoration: none;
+    transition: background-color 0.25s ease;
+    font-weight: 600;
+}
+
+.nav-link:hover {
+    background-color: #e0e0e0;
+}
+
+.nav-link.router-link-active {
+    color: #ccc;
 }
 </style>

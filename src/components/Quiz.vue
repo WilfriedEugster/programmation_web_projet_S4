@@ -181,12 +181,21 @@ buildQuestion();
 	padding: 12px;
 	border-left: 4px solid #999;
 	background: #f7f7f7;
+	display: inline-block;
+	width: fit-content;
+	max-width: 100%;
 }
 
 .quiz-choices {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
 	gap: 10px;
+}
+
+@media (max-width: 600px) {
+	.quiz-choices {
+		grid-template-columns: 1fr;
+	}
 }
 
 .quiz-feedback {
@@ -204,10 +213,10 @@ buildQuestion();
 
 .next-question {
 	margin-top: 14px;
-	border: 1px solid #ccc;
-	border-radius: 8px;
-	padding: 8px 12px;
-	background: white;
+	border: 1px solid var(--ui-border-color);
+	border-radius: var(--ui-radius);
+	padding: var(--ui-padding-sm);
+	background: var(--ui-bg);
 	cursor: pointer;
 }
 </style>

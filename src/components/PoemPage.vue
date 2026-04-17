@@ -14,12 +14,11 @@
 import { ref } from "vue";
 import { useRoute } from "vue-router";
 import poemsData from '../William Shakespeare.json';
-//import { getPoemDetails } from "@/services/api";
 
 const poem = ref(null);
 const route = useRoute();
 
-const fetchPoemDetails = async () => {
+const fetchPoemDetails = () => {
   const id = route.params.id;
   const poemData = poemsData.find((poem) => poem.title === id);
   poem.value = {
@@ -29,7 +28,6 @@ const fetchPoemDetails = async () => {
     linecount: poemData.linecount,
     lines: poemData.lines
   };
-  //poem.value = await getPoemDetails(id);
 };
 fetchPoemDetails();
 </script>

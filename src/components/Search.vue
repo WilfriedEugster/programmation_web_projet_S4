@@ -5,9 +5,6 @@
       <label for="search-by-title">Search by title: 
         <input type="text" v-model="searchByTitle" placeholder="Poem title" />
       </label>
-      <label for="search-by-author">Search by author: 
-        <input type="text" v-model="searchByAuthor" placeholder="Poem author" />
-      </label>
       <label for="min-line-count">Minimum line count: 
         <input type="number" v-model="minLineCount" placeholder="Minimum line count" min="0" />
       </label>
@@ -45,13 +42,11 @@ const minLineCount = ref(smallestLineCount)
 const maxLineCount = ref(largestLineCount)
 
 const searchByTitle = ref('')
-const searchByAuthor = ref('')
 
 const filteredPoemsData = computed(() => {
   let result = poemsData.filter(
     (poem) =>
       poem.title.toLowerCase().includes(searchByTitle.value.toLowerCase()) &&
-      poem.author.toLowerCase().includes(searchByAuthor.value.toLowerCase()) &&
       (poem.linecount || 0) >= minLineCount.value &&
       (poem.linecount || 0) <= maxLineCount.value
   )
@@ -71,5 +66,20 @@ const filteredPoemsData = computed(() => {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
+}
+
+@media (max-width: 600px) {
+  #gallery-options {
+    flex-direction: column;
+  }
+
+  #gallery-options label {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #poem-gallery {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
