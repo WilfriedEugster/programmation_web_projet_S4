@@ -2,6 +2,8 @@
 	<section class="quiz">
 		<h2>Quiz</h2>
 
+		<p v-if="isLoading" class="loading-text">Loading poems...</p>
+
 		<div class="quiz-scoreboard">
 			<p class="score good">Correct answers: {{ correctAnswers }}</p>
 			<p class="score bad">Wrong answers: {{ wrongAnswers }}</p>
@@ -61,6 +63,7 @@ const saveCount = (key, value) => {
 };
 
 const allPoems = ref([]);
+const isLoading = ref(false);
 
 const question = ref(null);
 const selectedChoiceId = ref(null);
@@ -146,11 +149,16 @@ const getChoiceState = (choiceId) => {
 };
 
 onMounted(async () => {
-	const poems = await fetchShakespearePoems();
-	allPoems.value = poems.filter(
-		(poem) => Array.isArray(poem.lines) && poem.lines.some((line) => line.trim() !== "")
-	);
-	buildQuestion();
+	isLoading.value = true;
+	try {
+		const poems = await fetchShakespearePoems();
+		allPoems.value = poems.filter(
+			(poem) => Array.isArray(poem.lines) && poem.lines.some((line) => line.trim() !== "")
+		);
+		buildQuestion();
+	} finally {
+		isLoading.value = false;
+	}
 });
 </script>
 
@@ -178,6 +186,11 @@ onMounted(async () => {
 
 .quiz-instruction {
 	margin-bottom: 10px;
+}
+
+.loading-text {
+	margin: 0 0 12px;
+	font-style: italic;
 }
 
 .quiz-line {

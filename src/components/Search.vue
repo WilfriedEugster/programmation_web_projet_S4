@@ -1,6 +1,7 @@
 <template>
   <div>
     <h2>Search</h2>
+    <p v-if="isLoading" class="loading-text">Loading poems...</p>
     <div id="gallery-options">
       <label for="search-by-title">Search by title: 
         <input type="text" v-model="searchByTitle" placeholder="Poem title" />
@@ -43,6 +44,7 @@ import { fetchShakespearePoems } from '../service/poemsApi'
 const poemsPerPage = 18
 
 const poemsData = ref([])
+const isLoading = ref(false)
 
 const minLineCount = ref(0)
 const maxLineCount = ref(0)
@@ -108,8 +110,13 @@ watch(totalPages, (newTotalPages) => {
 })
 
 onMounted(async () => {
-  poemsData.value = await fetchShakespearePoems()
-  syncLineCountBounds(poemsData.value)
+  isLoading.value = true
+  try {
+    poemsData.value = await fetchShakespearePoems()
+    syncLineCountBounds(poemsData.value)
+  } finally {
+    isLoading.value = false
+  }
 })
 </script>
 
@@ -124,6 +131,11 @@ onMounted(async () => {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
+}
+
+.loading-text {
+  margin: 0 0 12px;
+  font-style: italic;
 }
 
 .pagination {
