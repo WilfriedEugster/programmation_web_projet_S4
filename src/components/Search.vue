@@ -2,13 +2,18 @@
   <div>
     <h2>Search</h2>
     <div id="gallery-options">
-      <input type="text" v-model="search" placeholder="Search poem" />
-      <label for="poem-sort">Sort by : </label>
-      <select v-model="poemsSortBy" id="poem-sort">
-        <option value="linecount">Linecount</option>
-        <option value="author">Author</option>
-        <option value="title">Title</option>
-      </select>
+      <label for="search-by-title">Search by title: 
+        <input type="text" v-model="searchByTitle" placeholder="Poem title" />
+      </label>
+      <label for="search-by-author">Search by author: 
+        <input type="text" v-model="searchByAuthor" placeholder="Poem author" />
+      </label>
+      <label for="min-line-count">Minimum line count: 
+        <input type="number" v-model="minLineCount" placeholder="Minimum line count" min="0" />
+      </label>
+      <label for="max-line-count">Maximum line count: 
+        <input type="number" v-model="maxLineCount" placeholder="Maximum line count" min="0" />
+      </label>
     </div>
     <div id="poem-gallery">
       <PoemCard
@@ -27,30 +32,41 @@ import { ref, computed } from 'vue'
 import poemsData from '../William Shakespeare.json'
 import PoemCard from './PoemCard.vue'
 
-const search = ref('')
-const poemsSortBy = ref('linecount')
+const smallestLineCount = poemsData.reduce((min, poem) => {
+  const lineCount = Number(poem.linecount)
+  return Number.isFinite(lineCount) ? Math.min(min, lineCount) : min
+}, Infinity)
+const largestLineCount = poemsData.reduce((max, poem) => {
+  const lineCount = Number(poem.linecount)
+  return Number.isFinite(lineCount) ? Math.max(max, lineCount) : max
+}, 0)
+
+const minLineCount = ref(smallestLineCount)
+const maxLineCount = ref(largestLineCount)
+
+const searchByTitle = ref('')
+const searchByAuthor = ref('')
 
 const filteredPoemsData = computed(() => {
   let result = poemsData.filter(
-    (poem) => poem.title.toLowerCase().includes(search.value.toLowerCase())
+    (poem) =>
+      poem.title.toLowerCase().includes(searchByTitle.value.toLowerCase()) &&
+      poem.author.toLowerCase().includes(searchByAuthor.value.toLowerCase()) &&
+      (poem.linecount || 0) >= minLineCount.value &&
+      (poem.linecount || 0) <= maxLineCount.value
   )
-  result = result.toSorted((a, b) => {
-    if (poemsSortBy.value === 'linecount') {
-      // linecount can be null
-      return (a.linecount || 0) - (b.linecount || 0)
-    } else if (poemsSortBy.value === 'author') {
-      // sort in alphabetical order
-      return a.author.localeCompare(b.author)
-    } else if (poemsSortBy.value === 'title') {
-      // sort in alphabetical order
-      return a.title.localeCompare(b.title)
-    }
-  })
+  result = result.filter((poem) => poem.linecount !== null)
   return result
 })
 </script>
 
 <style scoped>
+#gallery-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
 #poem-gallery {
   display: flex;
   flex-wrap: wrap;
