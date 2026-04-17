@@ -25,26 +25,34 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import poemsData from '../William Shakespeare.json'
+import { ref, computed, onMounted } from 'vue'
 import PoemCard from './PoemCard.vue'
+import { fetchShakespearePoems } from '../service/poemsApi'
 
-const smallestLineCount = poemsData.reduce((min, poem) => {
-  const lineCount = Number(poem.linecount)
-  return Number.isFinite(lineCount) ? Math.min(min, lineCount) : min
-}, Infinity)
-const largestLineCount = poemsData.reduce((max, poem) => {
-  const lineCount = Number(poem.linecount)
-  return Number.isFinite(lineCount) ? Math.max(max, lineCount) : max
-}, 0)
+const poemsData = ref([])
 
-const minLineCount = ref(smallestLineCount)
-const maxLineCount = ref(largestLineCount)
+const minLineCount = ref(0)
+const maxLineCount = ref(0)
 
 const searchByTitle = ref('')
 
+const syncLineCountBounds = (poems) => {
+  const availableLineCounts = poems
+    .map((poem) => Number(poem.linecount))
+    .filter((lineCount) => Number.isFinite(lineCount))
+
+  if (availableLineCounts.length === 0) {
+    minLineCount.value = 0
+    maxLineCount.value = 0
+    return
+  }
+
+  minLineCount.value = Math.min(...availableLineCounts)
+  maxLineCount.value = Math.max(...availableLineCounts)
+}
+
 const filteredPoemsData = computed(() => {
-  let result = poemsData.filter(
+  let result = poemsData.value.filter(
     (poem) =>
       poem.title.toLowerCase().includes(searchByTitle.value.toLowerCase()) &&
       (poem.linecount || 0) >= minLineCount.value &&
@@ -52,6 +60,11 @@ const filteredPoemsData = computed(() => {
   )
   result = result.filter((poem) => poem.linecount !== null)
   return result
+})
+
+onMounted(async () => {
+  poemsData.value = await fetchShakespearePoems()
+  syncLineCountBounds(poemsData.value)
 })
 </script>
 

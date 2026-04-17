@@ -11,16 +11,23 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
-import poemsData from '../William Shakespeare.json';
+import { fetchShakespearePoems } from '../service/poemsApi';
 
 const poem = ref(null);
 const route = useRoute();
 
-const fetchPoemDetails = () => {
+const fetchPoemDetails = async () => {
   const id = route.params.id;
+  const poemsData = await fetchShakespearePoems();
   const poemData = poemsData.find((poem) => poem.title === id);
+
+  if (!poemData) {
+    poem.value = null;
+    return;
+  }
+
   poem.value = {
     id: id,
     title: poemData.title,
@@ -29,5 +36,8 @@ const fetchPoemDetails = () => {
     lines: poemData.lines
   };
 };
-fetchPoemDetails();
+
+onMounted(() => {
+  fetchPoemDetails();
+});
 </script>

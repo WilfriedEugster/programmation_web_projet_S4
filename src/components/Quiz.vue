@@ -42,9 +42,9 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
-import poemsData from "../William Shakespeare.json";
+import { computed, onMounted, ref } from "vue";
 import QuizPoemCard from "./QuizPoemCard.vue";
+import { fetchShakespearePoems } from "../service/poemsApi";
 
 const CORRECT_ANSWERS_KEY = "quiz-correct-answers";
 const WRONG_ANSWERS_KEY = "quiz-wrong-answers";
@@ -60,9 +60,7 @@ const saveCount = (key, value) => {
 	localStorage.setItem(key, String(value));
 };
 
-const allPoems = poemsData.filter(
-	(poem) => Array.isArray(poem.lines) && poem.lines.some((line) => line.trim() !== "")
-);
+const allPoems = ref([]);
 
 const question = ref(null);
 const selectedChoiceId = ref(null);
@@ -85,7 +83,7 @@ const pickRandomLine = (lines) => {
 const poemId = (poem) => `${poem.title}__${poem.author}`;
 
 const buildQuestion = () => {
-	if (allPoems.length < 3) {
+	if (allPoems.value.length < 3) {
 		question.value = null;
 		return;
 	}
@@ -93,8 +91,8 @@ const buildQuestion = () => {
 	hasAnswered.value = false;
 	selectedChoiceId.value = null;
 
-	const correctPoem = allPoems[randomIndex(allPoems.length)];
-	const wrongCandidates = allPoems.filter((poem) => poemId(poem) !== poemId(correctPoem));
+	const correctPoem = allPoems.value[randomIndex(allPoems.value.length)];
+	const wrongCandidates = allPoems.value.filter((poem) => poemId(poem) !== poemId(correctPoem));
 
 	const wrongChoices = [];
 	while (wrongChoices.length < 2) {
@@ -147,7 +145,13 @@ const getChoiceState = (choiceId) => {
 	return "neutral";
 };
 
-buildQuestion();
+onMounted(async () => {
+	const poems = await fetchShakespearePoems();
+	allPoems.value = poems.filter(
+		(poem) => Array.isArray(poem.lines) && poem.lines.some((line) => line.trim() !== "")
+	);
+	buildQuestion();
+});
 </script>
 
 <style scoped>
