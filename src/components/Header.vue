@@ -5,7 +5,7 @@ import { RouterLink } from 'vue-router';
 
 <template>
 <header>
-    <h1>Poems</h1>
+    <h1>Shakespeare's poems</h1>
     <nav>
         <ul>
             <li><RouterLink class="nav-link" to="/">Home</RouterLink></li>

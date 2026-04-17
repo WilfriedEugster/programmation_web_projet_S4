@@ -10,6 +10,10 @@ export const fetchShakespearePoems = async () => {
       }
 
       return response.json();
+    }).catch((error) => {
+      // Allow retry on next call if the current request fails.
+      poemsPromise = undefined;
+      throw error;
     });
   }
 

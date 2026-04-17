@@ -3,14 +3,14 @@
     <h2>Search</h2>
     <p v-if="isLoading" class="loading-text">Loading poems...</p>
     <div id="gallery-options">
-      <label for="search-by-title">Search by title: 
-        <input type="text" v-model="searchByTitle" placeholder="Poem title" />
+      <label for="search-by-title">Search by title:
+        <input id="search-by-title" type="text" v-model="searchByTitle" placeholder="Poem title" />
       </label>
-      <label for="min-line-count">Minimum line count: 
-        <input type="number" v-model="minLineCount" placeholder="Minimum line count" min="0" />
+      <label for="min-line-count">Minimum line count:
+        <input id="min-line-count" type="number" v-model="minLineCount" placeholder="Minimum line count" min="0" />
       </label>
-      <label for="max-line-count">Maximum line count: 
-        <input type="number" v-model="maxLineCount" placeholder="Maximum line count" min="0" />
+      <label for="max-line-count">Maximum line count:
+        <input id="max-line-count" type="number" v-model="maxLineCount" placeholder="Maximum line count" min="0" />
       </label>
     </div>
     <div id="poem-gallery">
